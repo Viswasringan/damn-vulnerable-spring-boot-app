@@ -1,16 +1,16 @@
 pipeline {
  agent none
   stages {
-   stage ('SAST Scan') {
-    agent any
-    steps {
-     withSonarQubeEnv('sonar'){
-     sh 'gradle sonar:sonar'
-     sh 'cat $(pwd)/sonar/report-task.txt '
-     }
-     
+   node {
+  stage('SCM') {
+    checkout scm
+  }
+  stage('SonarQube Analysis') {
+    withSonarQubeEnv() {
+      sh "./gradlew sonarqube"
     }
-   }
+  }
+}
    /*stage ('Deploy') {
     agent any
     steps {
