@@ -1,7 +1,12 @@
 pipeline {
  agent any
  stages {
-  stage('SCM') {
+  stage('Secret Scan') {
+   steps {
+    sh 'docker run -v /home/ubuntu:$(pwd) zricethezav/gitleaks detect -v -f csv -r gitleaks.csv'
+   }
+  }
+  /*stage('SCM') {
    steps {
     checkout scm
    }
@@ -13,7 +18,7 @@ pipeline {
     }
     }
   }
-}
+}*/
    /*stage ('Deploy') {
     agent any
     steps {
