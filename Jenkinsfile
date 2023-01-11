@@ -34,5 +34,5 @@ pipeline {
     sh 'docker rm dvsba'
    }
    }*/
-  
+ } 
 }
