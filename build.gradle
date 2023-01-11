@@ -21,6 +21,13 @@ plugins {
     id "groovy"
     id "org.owasp.dependencycheck" version "5.2.1"
     id "com.github.spotbugs" version "2.0.0"
+    id "org.sonarqube" version "3.4.0.2513"
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "example"
+  }
 }
 
 spotbugs {
