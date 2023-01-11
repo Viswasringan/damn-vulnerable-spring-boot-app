@@ -5,7 +5,7 @@ pipeline {
     agent any
     steps {
      withSonarQubeEnv('sonar'){
-     sh 'mvn sonar:sonar'
+     sh 'gradle sonar:sonar'
      sh 'cat $(pwd)/sonar/report-task.txt '
      }
      
