@@ -5,7 +5,7 @@ pipeline {
       agent any
       steps {
         sh 'docker build -t dvsba:latest .'
-        sh 'docker run -p -d 8082:8080 dvsba:latest'
+        sh 'docker run -d -p 8082:8080 dvsba:latest'
       }
     }
    stage ('DAST Scan') {
