@@ -2,6 +2,7 @@ pipeline {
  agent none
   stages {
    stage ('SAST Scan') {
+    agent any
     steps {
      withSonarQubeEnv('sonar'){
      sh 'mvn sonar:sonar'
