@@ -1,7 +1,16 @@
 pipeline {
  agent none
   stages {
-   stage ('Deploy') {
+   stage ('SAST Scan') {
+    steps {
+     withSonarQubeEnv('sonar'){
+     sh 'mvn sonar:sonar'
+     sh 'cat $(pwd)/sonar/report-task.txt '
+     }
+     
+    }
+   }
+   /*stage ('Deploy') {
     agent any
     steps {
      sh 'docker run -d --name dvsba -p 8082:8080 dvsba:latest'
@@ -15,6 +24,6 @@ pipeline {
     sh 'docker stop dvsba'
     sh 'docker rm dvsba'
    }
-   }
+   }*/
   }
 }
