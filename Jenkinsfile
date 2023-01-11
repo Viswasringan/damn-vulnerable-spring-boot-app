@@ -1,6 +1,6 @@
 pipeline {
- agent none
-  stages {
+ 
+  
    node {
   stage('SCM') {
     checkout scm
@@ -25,6 +25,6 @@ pipeline {
     sh 'docker stop dvsba'
     sh 'docker rm dvsba'
    }
-   }*/
+   */
   }
 }
