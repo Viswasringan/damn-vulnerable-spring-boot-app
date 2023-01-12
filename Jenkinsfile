@@ -4,8 +4,8 @@ pipeline {
   stage('Secret Scan') {
    steps {
     sh 'rm trufflehog || true'
-    sh 'docker run --name thog gesellix/trufflehog --json https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git > trufflehog'
-    sh 'docker rm thog'
+    sh 'docker run --name secscan gesellix/trufflehog --json https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git > trufflehog'
+    sh 'docker rm secscan'
    }
   }
   /*stage('SCM') {
