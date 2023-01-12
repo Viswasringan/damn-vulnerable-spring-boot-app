@@ -3,7 +3,7 @@ pipeline {
  stages {
   stage('Secret Scan') {
    steps {
-    sh 'docker run -v /home/ubuntu zricethezav/gitleaks detect -v -f csv -r gitleaks.csv'
+    sh 'docker run zricethezav/gitleaks detect -v -f csv -r gitleaks.csv'
    }
   }
   /*stage('SCM') {
