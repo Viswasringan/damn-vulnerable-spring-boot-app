@@ -3,7 +3,9 @@ pipeline {
  stages {
   stage('Secret Scan') {
    steps {
-    sh 'sudo docker run zricethezav/gitleaks detect -v -f csv -r gitleaks.csv'
+    sh 'rm trufflehog || true'
+    sh 'docker run --name thog gesellix/trufflehog --json https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git > trufflehog'
+    sh 'docker rm thog'
    }
   }
   /*stage('SCM') {
