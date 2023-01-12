@@ -33,6 +33,6 @@ pipeline {
     sh 'docker stop dvsba'
     sh 'docker rm dvsba'
    }
-   }*/ API_TOKEN=123456789
+   } API_TOKEN=123456789 */
  } 
 }
