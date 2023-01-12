@@ -12,7 +12,7 @@ pipeline {
    steps {
     snykSecurity(
      snykInstallation: 'Snyk SCA'
-     snykTokenId: 'snyk-token'
+     snykTokenId: 'snyk-sca'
     )
    }
   }
