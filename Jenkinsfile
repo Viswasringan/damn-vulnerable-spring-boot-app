@@ -11,8 +11,8 @@ pipeline {
   stage('SCA') {
    steps {
     snykSecurity(
-     snykInstallation: 'Snyk SCA'
-     snykTokenId: 'snyk-sca'
+     snykInstallation: 'Snyk SCA',
+     snykTokenId: 'snyk-token'
     )
    }
   }
