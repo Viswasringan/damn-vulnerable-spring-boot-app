@@ -1,7 +1,7 @@
 pipeline {
  agent any
  stages {
-  /*stage('Secret Scan') {
+  stage('Secret Scan') {
    steps {
     sh 'rm trufflehog || true'
     sh 'docker run --name secscan gesellix/trufflehog --json https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git > trufflehog'
@@ -16,7 +16,7 @@ pipeline {
      failOnIssues: false
     )
    }
-  }*/
+  }
   /*stage('SCM') {
    steps {
     checkout scm
@@ -30,7 +30,12 @@ pipeline {
     }
   
 }
-   /*stage ('Deploy') {
+  stage ('Docker Build') {
+      steps {
+        sh 'docker build -t dvsba:latest .'
+      }
+    }
+   stage ('Deploy') {
     agent any
     steps {
      sh 'docker run -d --name dvsba -p 8082:8080 dvsba:latest'
@@ -44,6 +49,6 @@ pipeline {
     sh 'docker stop dvsba'
     sh 'docker rm dvsba'
    }
-   } API_TOKEN=123456789 */
+   }
  } 
 }
