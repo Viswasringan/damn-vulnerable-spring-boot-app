@@ -7,7 +7,7 @@ pipeline {
     sh 'docker run --name secscan gesellix/trufflehog --json https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git > trufflehog'
     sh 'docker rm secscan'
    }
-  }*/
+  }
   stage('SCA') {
    steps {
     snykSecurity(
@@ -16,20 +16,20 @@ pipeline {
      failOnIssues: false
     )
    }
-  }
+  }*/
   /*stage('SCM') {
    steps {
     checkout scm
    }
-  }
+  }*/
   stage('SonarQube Analysis') {
    steps {
     withSonarQubeEnv('sonar') {
       sh "./gradlew sonarqube"
     }
     }
-  }
-}*/
+  
+}
    /*stage ('Deploy') {
     agent any
     steps {
