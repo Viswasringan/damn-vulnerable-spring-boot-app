@@ -36,4 +36,4 @@ jobs:
           token: ${{ secrets.GIT_PAT }}
           docker_name: owasp/zap2docker-stable
           target: http://127.0.0.1:8080/
-          cmd_options: 'I'
+          
