@@ -35,4 +35,4 @@ jobs:
       with:
           docker_name: owasp/zap2docker-stable
           target: http://127.0.0.1:8080/
-          fail_action: false
+          fail_action: true
