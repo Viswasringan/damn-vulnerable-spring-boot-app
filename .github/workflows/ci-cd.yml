@@ -22,4 +22,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag dvsba:latest
     - name: Push to Docker repository
-      run: docker push ${{secrets.DOCKER_USER}}/dvsba
+      run: docker push ${{secrets.DOCKER_USERNAME}}/dvsba
