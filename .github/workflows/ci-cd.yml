@@ -23,3 +23,15 @@ jobs:
       run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/dvsba:latest
     - name: Push to Docker repository
       run: docker push ${{secrets.DOCKER_USERNAME}}/dvsba:latest
+      
+  deploy:
+  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run docker image
+      run: docker run -d -p 8080:8080 viswasringan/dvsba:latest
+    - name: ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.7.0
+      with:
+          docker_name: owasp/zap2docker-stable
+          target: http://127.0.0.1:8080/
