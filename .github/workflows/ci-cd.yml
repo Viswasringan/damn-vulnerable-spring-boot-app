@@ -17,6 +17,7 @@ jobs:
        - uses: trufflesecurity/trufflehog@main
          with:
           path: ./
+          extra_args: --debug --only-verified --json trufflehog.json
 
 #   SCA-Scan:
 #     runs-on: ubuntu-latest
