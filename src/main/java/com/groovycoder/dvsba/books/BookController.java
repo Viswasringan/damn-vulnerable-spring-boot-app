@@ -13,7 +13,8 @@ import java.util.*;
 @RequestMapping("/books")
 @Controller
 class BookController {
-
+    String username= "admin";
+    String password= "password";
     private final JdbcTemplate jdbcTemplate;
 
     public BookController(JdbcTemplate jdbcTemplate) {
