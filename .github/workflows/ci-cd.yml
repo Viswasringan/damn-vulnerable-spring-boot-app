@@ -18,6 +18,8 @@ jobs:
          go-version: '1.19'
       - name: SCA scan for checking dependencies
         run: snyk monitor
+        env:
+         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Snyk Test  
         run: snyk test --json | snyk-to-html -o snyk_results.html
         env:
