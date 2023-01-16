@@ -8,28 +8,35 @@ on:
 
 jobs:
 
-   SCA-Scan:
-     runs-on: ubuntu-latest
-     steps:
-      - uses: actions/checkout@master
-      - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
-        with:
-         go-version: '1.19'
-      - name: SCA scan for checking dependencies
-        run: snyk monitor
-        env:
-         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Install Snyk to html
-        run: npm install snyk-to-html -g
-      - name: Snyk Test  
-        run: snyk test --json | snyk-to-html -o snyk_results.html
-        env:
-         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Upload report
-        uses: actions/upload-artifact@v3.1.2
-        with:
-         path: snyk_results.html
+    Secret-Scan:
+      runs-on: ubuntu-latest
+      steps:
+       - uses: trufflesecurity/trufflehog@v3.25.2
+         with:
+          path: https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git
+
+#   SCA-Scan:
+#     runs-on: ubuntu-latest
+#     steps:
+#      - uses: actions/checkout@master
+#      - uses: snyk/actions/setup@master
+#      - uses: actions/setup-go@v1
+#        with:
+#         go-version: '1.19'
+#      - name: SCA scan for checking dependencies
+#        run: snyk monitor
+#        env:
+#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#      - name: Install Snyk to html
+#        run: npm install snyk-to-html -g
+#      - name: Snyk Test  
+#        run: snyk test --json | snyk-to-html -o snyk_results.html
+#        env:
+#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#      - name: Upload report
+#        uses: actions/upload-artifact@v3.1.2
+#        with:
+#         path: snyk_results.html
       
 
 #   SAST-Scan:
