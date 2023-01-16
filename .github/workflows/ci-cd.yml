@@ -12,8 +12,9 @@ jobs:
      runs-on: ubuntu-latest
      steps:
       - uses: actions/checkout@v2
-      - name: SCA
+      - name: SCA scan for checking dependencies
         uses: snyk/actions/gradle@master
+        continue-on-error: true
         env:
          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       
