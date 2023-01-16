@@ -8,6 +8,16 @@ on:
 
 jobs:
 
+   SAST-Scan:
+     runs-on: ubuntu-latest
+     steps:
+     - name: Run SAST scan
+       uses: SonarSource/sonarcloud-github-action@v1.8
+       with:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
+     
+
 #  build:
 
 #    runs-on: ubuntu-latest
@@ -24,16 +34,16 @@ jobs:
 #    - name: Push to Docker repository
 #      run: docker push ${{secrets.DOCKER_USERNAME}}/dvsba:latest
       
-  deploy:
+#   deploy:
   
-    runs-on: ubuntu-latest
-    steps:
-    - name: Run docker image
-      run: docker run -d -p 8080:8080 viswasringan/dvsba:latest
-    - name: ZAP Baseline Scan
-      uses: zaproxy/action-baseline@v0.7.0
-      with:
-          token: ${{ secrets.GIT_PAT }}
-          docker_name: owasp/zap2docker-stable
-          target: http://127.0.0.1:8080/
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: Run docker image
+#      run: docker run -d -p 8080:8080 viswasringan/dvsba:latest
+#    - name: ZAP Baseline Scan
+#      uses: zaproxy/action-baseline@v0.7.0
+#      with:
+#          token: ${{ secrets.GIT_PAT }}
+#          docker_name: owasp/zap2docker-stable
+#          target: http://127.0.0.1:8080/
           
