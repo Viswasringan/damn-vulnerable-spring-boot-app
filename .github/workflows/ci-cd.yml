@@ -11,9 +11,9 @@ jobs:
     Secret-Scan:
       runs-on: ubuntu-latest
       steps:
-       - uses: trufflesecurity/trufflehog@v3.25.2
+       - uses: trufflesecurity/trufflehog@main
          with:
-          path: https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git
+          path: ./
 
 #   SCA-Scan:
 #     runs-on: ubuntu-latest
