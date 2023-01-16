@@ -21,12 +21,14 @@ plugins {
     id "groovy"
     id "org.owasp.dependencycheck" version "5.2.1"
     id "com.github.spotbugs" version "2.0.0"
-    id "org.sonarqube" version "3.4.0.2513"
+    id "org.sonarqube" version "3.5.0.2730"
 }
 
 sonarqube {
   properties {
-    property "sonar.projectKey", "example"
+    property "sonar.projectKey", "Viswasringan_damn-vulnerable-spring-boot-app"
+    property "sonar.organization", "viswasringan"
+    property "sonar.host.url", "https://sonarcloud.io"
   }
 }
 
