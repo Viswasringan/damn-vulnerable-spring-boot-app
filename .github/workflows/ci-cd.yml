@@ -12,10 +12,20 @@ jobs:
      runs-on: ubuntu-latest
      steps:
       - uses: actions/checkout@master
-      - name: SCA Check
-        uses: snyk/actions@0.3.0
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-go@v1
+        with:
+         go-version: '1.19'
+      - name: SCA scan for checking dependencies
+        run: snyk monitor
+      - name: Snyk Test  
+        run: snyk test --json | snyk-to-html -o snyk_results.html
         env:
          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Upload report
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         path: snyk_results.html
       
 
 #   SAST-Scan:
