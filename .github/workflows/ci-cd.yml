@@ -19,85 +19,87 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true
 
-#   SCA-Scan:
-#     runs-on: ubuntu-latest
-#     steps:
-#      - uses: actions/checkout@master
-#      - uses: snyk/actions/setup@master
-#      - uses: actions/setup-go@v1
-#        with:
-#         go-version: '1.19'
-#      - name: SCA scan for checking dependencies
-#        run: snyk monitor
-#        env:
-#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-#      - name: Install Snyk to html
-#        run: npm install snyk-to-html -g
-#      - name: Snyk Test  
-#        run: snyk test --json | snyk-to-html -o snyk_results.html
-#        env:
-#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-#      - name: Upload report
-#        uses: actions/upload-artifact@v3.1.2
-#        with:
-#         path: snyk_results.html
+    SCA-Scan:
+      needs: Secret-Scan
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@master
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-go@v1
+        with:
+         go-version: '1.19'
+      - name: SCA scan for checking dependencies
+        run: snyk monitor
+        env:
+         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Install Snyk to html
+        run: npm install snyk-to-html -g
+      - name: Snyk Test  
+        run: snyk test --json | snyk-to-html -o snyk_results.html
+        env:
+         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Upload report
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         path: snyk_results.html
       
 
-#   SAST-Scan:
-#    runs-on: ubuntu-latest
-#     steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Cache SonarCloud packages
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.sonar/cache
-#          key: ${{ runner.os }}-sonar
-#          restore-keys: ${{ runner.os }}-sonar
-#      - name: Cache Gradle packages
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.gradle/caches
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-#          restore-keys: ${{ runner.os }}-gradle
-#      - name: Build and analyze
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: ./gradlew build sonarqube --info
-     
+    SAST-Scan:
+     needs: SCA-Scan
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonarqube --info
+    
 
-#  build:
+    build:
+     needs: SAST-Scan
+     runs-on: ubuntu-latest
 
-#    runs-on: ubuntu-latest
-
-#    steps:
-#    - uses: actions/checkout@v3
-#    - name: Log in to Docker Hub
-#      uses: docker/login-action@v2.1.0
-#      with:
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/dvsba:latest
-#    - name: Push to Docker repository
-#      run: docker push ${{secrets.DOCKER_USERNAME}}/dvsba:latest
+     steps:
+     - uses: actions/checkout@v3
+     - name: Log in to Docker Hub
+       uses: docker/login-action@v2.1.0
+       with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+     - name: Build the Docker image
+       run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/dvsba:latest
+     - name: Push to Docker repository
+       run: docker push ${{secrets.DOCKER_USERNAME}}/dvsba:latest
       
-#   deploy:
-  
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Run docker image
-#      run: docker run -d -p 8080:8080 viswasringan/dvsba:latest
-#    - name: ZAP Baseline Scan
-#      uses: zaproxy/action-baseline@v0.7.0
-#      with:
-#          token: ${{ secrets.GIT_PAT }}
-#          docker_name: owasp/zap2docker-stable
-#          target: http://127.0.0.1:8080/
+    deploy:
+     needs: build
+     runs-on: ubuntu-latest
+     steps:
+     - name: Run docker image
+       run: docker run -d -p 8080:8080 viswasringan/dvsba:latest
+     - name: ZAP Baseline Scan
+       uses: zaproxy/action-baseline@v0.7.0
+       with:
+          token: ${{ secrets.GIT_PAT }}
+          docker_name: owasp/zap2docker-stable
+          target: http://127.0.0.1:8080/
           
