@@ -1,7 +1,7 @@
 pipeline {
  agent any
  stages {
-  stage('Secret Scan') {
+  /*stage('Secret Scan') {
    steps {
     sh 'rm trufflehog || true'
     sh 'docker run --name secscan gesellix/trufflehog --json https://github.com/Viswasringan/damn-vulnerable-spring-boot-app.git > trufflehog'
@@ -17,11 +17,11 @@ pipeline {
     )
    }
   }
-  /*stage('SCM') {
+  stage('SCM') {
    steps {
     checkout scm
    }
-  }*/
+  }
   stage('SonarQube Analysis') {
    steps {
     withSonarQubeEnv('sonar') {
@@ -34,7 +34,7 @@ pipeline {
       steps {
         sh 'docker build -t dvsba:latest .'
       }
-    }
+    }*/
    stage ('Deploy') {
     agent any
     steps {
